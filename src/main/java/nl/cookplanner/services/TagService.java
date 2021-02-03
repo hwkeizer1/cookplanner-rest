@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import nl.cookplanner.domain.Tag;
+import nl.cookplanner.execptions.TagAlreadyExistsException;
 import nl.cookplanner.repositories.TagRepository;
 
 @Service
@@ -24,8 +25,11 @@ public class TagService {
 		return tagRepository.findAll();
 	}
 	
-	public void save(Tag tag) {
-		tagRepository.save(tag);
+	public Tag save(Tag tag) {
+		if (tagRepository.findByName(tag.getName()).isPresent()) {
+			throw new TagAlreadyExistsException("Categorie " + tag.getName() + " bestaat al");
+		}
+		return tagRepository.save(tag);
 	}
 	
 	public Optional<Tag> get(Long id) {

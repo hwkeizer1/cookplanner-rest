@@ -1,7 +1,6 @@
 package nl.cookplanner.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.extern.slf4j.Slf4j;
 import nl.cookplanner.domain.Tag;
 import nl.cookplanner.execptions.ErrorResponse;
 import nl.cookplanner.execptions.TagAlreadyExistsException;
 import nl.cookplanner.execptions.TagNotFoundException;
 import nl.cookplanner.services.TagService;
 
-@Slf4j
 @RestController
-@RequestMapping("tag")
+@RequestMapping("tags")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TagController {
 
@@ -35,48 +32,30 @@ public class TagController {
 		this.tagService = tagService;
 	}
 
-	@GetMapping("/list")
-	public ResponseEntity<List<Tag>> getTags() {
-		return ResponseEntity.ok(tagService.listAll());
+	@GetMapping()
+	public ResponseEntity<List<Tag>> findAll() {
+		return ResponseEntity.ok(tagService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Tag> get(@PathVariable Long id) {
-		Optional<Tag> optionalTag = tagService.get(id);
-		if (optionalTag.isPresent()) {
-			return ResponseEntity.ok(optionalTag.get());
-		} else {
-			throw new TagNotFoundException("Categorie kan niet worden gevonden");
-		}
+	public ResponseEntity<Tag> findById(@PathVariable Long id) {
+		return ResponseEntity.ok(tagService.findById(id));
 	}
 	
-	@PostMapping("/create")
-	public ResponseEntity<Tag> create(@RequestBody Tag tag) throws TagAlreadyExistsException {
+	@PostMapping()
+	public ResponseEntity<Tag> create(@RequestBody Tag tag) {
 		return ResponseEntity.ok(tagService.save(tag));
 		
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Tag> update(@RequestBody Tag tag, @PathVariable Long id) {
-		Optional<Tag> optionalTag = tagService.get(id);
-		if (optionalTag.isPresent()) {
-			return ResponseEntity.ok(tagService.save(tag));
-		} else {
-			throw new TagNotFoundException("Categorie kan niet worden gevonden");
-		}
+		return ResponseEntity.ok(tagService.update(tag, id));
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Tag> delete(@PathVariable Long id) {
-		// TODO: Build additional check if category is in use and handle accordingly
-		Optional<Tag> optionalTag = tagService.get(id);
-		if (optionalTag.isPresent()) {
-			tagService.delete(id);
-			return ResponseEntity.ok(optionalTag.get());
-		} else {
-			throw new TagNotFoundException("Categorie kan niet worden gevonden");
-		}
-		
+		return ResponseEntity.ok(tagService.delete(id));
 	}
 	
 	@ExceptionHandler({TagNotFoundException.class})

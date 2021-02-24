@@ -33,7 +33,7 @@ public class TagService {
 	
 	public Tag update(Tag tag, Long id) {
 		Optional<Tag> optionalTag = tagRepository.findByName(tag.getName()); 
-		if (optionalTag.isPresent() && id != optionalTag.get().getId()) {
+		if (optionalTag.isPresent() && !id.equals(optionalTag.get().getId())) {
 			throw new TagAlreadyExistsException("Categorie " + tag.getName() + " bestaat al");
 		}
 		tag.setId(id);

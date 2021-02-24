@@ -34,7 +34,7 @@ public class MeasureUnitService {
 	
 	public MeasureUnit update(MeasureUnit measureUnit, Long id) {
 		Optional<MeasureUnit> optionalMeasureUnit = measureUnitRepository.findByName(measureUnit.getName()); 
-		if (optionalMeasureUnit.isPresent() && id != optionalMeasureUnit.get().getId()) {
+		if (optionalMeasureUnit.isPresent() && !id.equals(optionalMeasureUnit.get().getId())) {
 			throw new MeasureUnitAlreadyExistsException("Maateenheid " + measureUnit.getName() + " bestaat al");
 		}
 		measureUnit.setId(id);

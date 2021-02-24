@@ -45,7 +45,6 @@ public class MeasureUnitController {
 	@PostMapping()
 	public ResponseEntity<MeasureUnit> create(@RequestBody MeasureUnit measureUnit) {
 		return ResponseEntity.ok(measureUnitService.save(measureUnit));
-		
 	}
 	
 	@PutMapping("/{id}")

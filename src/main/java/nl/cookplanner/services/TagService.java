@@ -5,11 +5,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.cookplanner.domain.Tag;
 import nl.cookplanner.execptions.TagAlreadyExistsException;
 import nl.cookplanner.execptions.TagNotFoundException;
 import nl.cookplanner.repositories.TagRepository;
 
+@Slf4j
 @Service
 @Transactional
 public class TagService {

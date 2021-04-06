@@ -62,16 +62,6 @@ class TagServiceTest {
 	}
 	
 	@Test
-	void testUpdate_HappyPathWithoutUpdate() {
-		Tag tag = getMockTag(1L, "test");
-		when(tagRepository.findByName("test")).thenReturn(Optional.of(tag));
-		
-		tagService.update(tag, 1L);
-		
-		verify(tagRepository, times(1)).save(tag);
-	}
-	
-	@Test
 	void testUpdate_AlreadyExists() {
 		Tag tag = getMockTag(1L, "test");
 		Tag otherTag = getMockTag(2L, "test");

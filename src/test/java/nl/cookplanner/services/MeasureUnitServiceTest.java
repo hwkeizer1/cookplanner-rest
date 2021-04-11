@@ -55,7 +55,7 @@ class MeasureUnitServiceTest {
 		MeasureUnit measureUnit = getMockMeasureUnit(1L, "test", "testen");
 		when(measureUnitRepository.findByName("test")).thenReturn(Optional.of(measureUnit));
 		
-		MeasureUnit updatedMeasureUnit = measureUnitService.update(measureUnit, 1L);
+		measureUnitService.update(measureUnit, 1L);
 		
 		verify(measureUnitRepository, times(1)).save(measureUnit);
 	}

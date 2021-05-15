@@ -2,20 +2,18 @@ package nl.cookplanner.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.extern.slf4j.Slf4j;
-import nl.cookplanner.domain.IngredientName;
 import nl.cookplanner.domain.Recipe;
-import nl.cookplanner.execptions.IngredientNameAlreadyExistsException;
-import nl.cookplanner.execptions.IngredientNameNotFoundException;
+import nl.cookplanner.domain.RecipeType;
 import nl.cookplanner.execptions.RecipeAlreadyExistsException;
 import nl.cookplanner.execptions.RecipeNotFoundException;
 import nl.cookplanner.repositories.RecipeRepository;
 
-@Slf4j
 @Service
 @Transactional
 public class RecipeService {
@@ -63,6 +61,12 @@ public class RecipeService {
 		} else {
 			throw new RecipeNotFoundException("Recept met id " + id + " kan niet worden gevonden");
 		}
+	}
+	
+	public List<String> findAllRecipeTypes() {
+		return Stream.of(RecipeType.values())
+				.map(RecipeType::name)
+				.collect(Collectors.toList());
 	}
 	
 }

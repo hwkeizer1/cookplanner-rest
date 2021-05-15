@@ -68,14 +68,14 @@ public class IngredientNameController {
 	}
 	
 	@ExceptionHandler({IngredientNameNotFoundException.class})
-    public ResponseEntity<ErrorResponse> measureUnitNotFound(IngredientNameNotFoundException ex){
+    public ResponseEntity<ErrorResponse> ingredientNameNotFound(IngredientNameNotFoundException ex){
 
         return new ResponseEntity<>(
             new ErrorResponse(ex.getMessage(), 404) , HttpStatus.NOT_FOUND);
     }
 	
 	@ExceptionHandler({IngredientNameAlreadyExistsException.class})
-    public ResponseEntity<ErrorResponse> measureUnitNotFound(IngredientNameAlreadyExistsException ex){
+    public ResponseEntity<ErrorResponse> ingredientNameNotFound(IngredientNameAlreadyExistsException ex){
 
         return new ResponseEntity<>(
             new ErrorResponse(ex.getMessage(), 400) , HttpStatus.BAD_REQUEST);

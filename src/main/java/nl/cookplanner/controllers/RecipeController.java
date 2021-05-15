@@ -2,9 +2,11 @@ package nl.cookplanner.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.cookplanner.domain.Recipe;
+import nl.cookplanner.execptions.ErrorResponse;
+import nl.cookplanner.execptions.RecipeAlreadyExistsException;
+import nl.cookplanner.execptions.RecipeNotFoundException;
 import nl.cookplanner.services.RecipeService;
 
 @RestController
@@ -52,5 +57,24 @@ public class RecipeController {
 	public ResponseEntity<Recipe> delete(@PathVariable Long id) {
 		return ResponseEntity.ok(recipeService.delete(id));
 	}
+	
+	@GetMapping("/recipetypes")
+	public ResponseEntity<List<String>> findAllRecipeTypes() {
+		return ResponseEntity.ok(recipeService.findAllRecipeTypes());
+	}
+	
+	@ExceptionHandler({RecipeNotFoundException.class})
+    public ResponseEntity<ErrorResponse> recipeNotFound(RecipeNotFoundException ex){
+
+        return new ResponseEntity<>(
+            new ErrorResponse(ex.getMessage(), 404) , HttpStatus.NOT_FOUND);
+    }
+	
+	@ExceptionHandler({RecipeAlreadyExistsException.class})
+    public ResponseEntity<ErrorResponse> recipeNotFound(RecipeAlreadyExistsException ex){
+
+        return new ResponseEntity<>(
+            new ErrorResponse(ex.getMessage(), 400) , HttpStatus.BAD_REQUEST);
+    }
 	
 }
